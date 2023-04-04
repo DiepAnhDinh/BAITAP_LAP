@@ -42,9 +42,7 @@ WHERE YEAR(Ngaynhap) = 2018 AND MONTH(Ngaynhap) = 8 AND dongiaN>100000
 GROUP BY Sohdn, Nhanvien.Manv, soluongN, dongiaN, Ngaynhap
 
 /***B.8***/
-SELECT Nhap.Masp, Ngaynhap, dongiaN
-FROM Nhap INNER JOIN Xuat ON Nhap.Masp = Xuat.Masp
-WHERE NOT EXISTS(SELECT *FROM Xuat)
+SELECT *FROM Nhap WHERE Nhap.Masp NOT IN(SELECT Xuat.Masp FROM Xuat)
 
 /***B.9***/
 SELECT Nhap.Masp, Ngaynhap, Ngayxuat, dongiaN
