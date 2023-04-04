@@ -91,3 +91,41 @@ GO
 SELECT dbo.Lay_TongSpXuatNgay('F3 Lite', '2')
 
 /***********B.8***********/
+CREATE FUNCTION Sodienthoainhanvienxuat(@x nchar(10))
+RETURNS int
+AS
+BEGIN 
+	DECLARE @Sodienthoainhanvienxuat int
+	SELECT @Sodienthoainhanvienxuat = Sodt FROM Nhanvien INNER JOIN Xuat ON Nhanvien.manv = Xuat.manv
+	WHERE Xuat.Sohdx = @x
+	RETURN @Sodienthoainhanvienxuat
+END
+GO
+SELECT dbo.Sodienthoainhanvienxuat('X03')
+GO
+/***********B.9***********/
+CREATE FUNCTION TongNhapXuatTheoNam(@tensp nvarchar(20), @y int)
+RETURNS int
+AS
+BEGIN 
+	DECLARE @TongNhapXuat int
+	SELECT @TongNhapXuat = soluongN - soluongX FROM Nhap INNER JOIN Xuat ON Nhap.masp = Xuat.masp INNER JOIN Sanpham ON Xuat.masp = Sanpham.masp
+	WHERE Sanpham.tensp = @tensp AND YEAR(Ngaynhap) = @y AND YEAR(Ngayxuat) = @y
+	RETURN @TongNhapXuat
+END
+GO
+SELECT dbo.TongNhapXuatTheoNam('F1Plus', 2020)
+GO
+/***********B.10***********/
+CREATE FUNCTION Tongsoluongsanpham(@tenhang nvarchar(20))
+RETURNS int
+AS
+BEGIN 
+	DECLARE @Tongsoluongsanpham int
+	SELECT @Tongsoluongsanpham = Count(tensp) FROM Sanpham INNER JOIN Hangsx ON Sanpham.mahangsx = Hangsx.mahangsx 
+	WHERE Hangsx.Tenhang = @tenhang
+	RETURN @Tongsoluongsanpham
+END
+GO
+SELECT dbo.Tongsoluongsanpham('Samsung')
+GO
